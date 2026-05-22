@@ -1,0 +1,101 @@
+def decode_binary(binary_input: str) -> str:
+    """Convert space-separated 8-bit binary groups to readable text."""
+    groups = binary_input.strip().split()
+    result = ""
+ 
+    for i, group in enumerate(groups):
+        if not all(c in '01' for c in group):
+            raise ValueError(f"Invalid character in group {i+1}: '{group}' (only 0s and 1s allowed)")
+        if len(group) != 8:
+            raise ValueError(f"Group {i+1} has {len(group)} bits — each group must be exactly 8 bits")
+ 
+        code = int(group, 2)
+        result += chr(code)
+ 
+    return result
+ 
+ 
+def encode_to_binary(text: str) -> str:
+    """Convert plain text to space-separated 8-bit binary groups."""
+    return " ".join(format(ord(ch), "08b") for ch in text)
+ 
+ 
+def display_banner():
+    print("=" * 54)
+    print("   ███████╗██╗  ██╗ █████╗ ██████╗  ██████╗ ██╗    ██╗")
+    print("   ██╔════╝██║  ██║██╔══██╗██╔══██╗██╔═══██╗██║    ██║")
+    print("   ███████╗███████║███████║██║  ██║██║   ██║██║ █╗ ██║")
+    print("   ╚════██║██╔══██║██╔══██║██║  ██║██║   ██║██║███╗██║")
+    print("   ███████║██║  ██║██║  ██║██████╔╝╚██████╔╝╚███╔███╔╝")
+    print("   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚══╝╚══╝")
+    print("              C I P H E R  —  v1.0")
+    print("=" * 54)
+    print("  [SECURE CHANNEL ACTIVE] Agent messaging system")
+    print("=" * 54)
+ 
+ 
+def display_menu():
+    print("\n  [1] Decode binary transmission → text")
+    print("  [2] Encode text → binary transmission")
+    print("  [3] Run demo transmissions")
+    print("  [0] Terminate session")
+    print()
+ 
+ 
+def run_demo():
+    demos = [
+        ("01001000 01100101 01101100 01101100 01101111", "HELLO"),
+        ("01001101 01001001 01010011 01010011 01001001 01001111 01001110 00100000 01000001 01000011 01000011 01000101 01010000 01010100 01000101 01000100", "MISSION ACCEPTED"),
+        ("01000001 01000010 01001111 01010010 01010100", "ABORT"),
+    ]
+ 
+    print("\n  [DEMO TRANSMISSIONS]")
+    print("  " + "-" * 50)
+    for binary, label in demos:
+        decoded = decode_binary(binary)
+        print(f"  {label}:")
+        print(f"    Binary  : {binary}")
+        print(f"    Decoded : {decoded}")
+        print()
+ 
+ 
+def main():
+    display_banner()
+ 
+    while True:
+        display_menu()
+        choice = input("  >> Enter command: ").strip()
+ 
+        if choice == "1":
+            print("\n  [DECODE MODE] Paste binary (space-separated 8-bit groups):")
+            binary_input = input("  >> ").strip()
+            try:
+                result = decode_binary(binary_input)
+                print(f"\n  [TRANSMISSION DECODED]")
+                print(f"  >> {result}")
+            except ValueError as e:
+                print(f"\n  [ERROR] {e}")
+ 
+        elif choice == "2":
+            print("\n  [ENCODE MODE] Enter your message:")
+            text_input = input("  >> ").strip()
+            if not text_input:
+                print("\n  [ERROR] Empty message — nothing to encode.")
+            else:
+                result = encode_to_binary(text_input)
+                print(f"\n  [BINARY TRANSMISSION READY]")
+                print(f"  >> {result}")
+ 
+        elif choice == "3":
+            run_demo()
+ 
+        elif choice == "0":
+            print("\n  [SESSION TERMINATED] Stay safe, agent.\n")
+            break
+ 
+        else:
+            print("\n  [ERROR] Unknown command. Use 1, 2, 3, or 0.")
+ 
+ 
+if __name__ == "__main__":
+    main()
